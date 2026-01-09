@@ -1,10 +1,6 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
 
-if [ "$EUID" -ne 0 ]; then
-  echo "[X] Ce script doit être exécuté en root"
-  exit 1
-fi
 
 # 1. INSTALLATION DES ARMURES
 sudo apt update
