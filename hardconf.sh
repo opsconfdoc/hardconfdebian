@@ -87,7 +87,7 @@ CONF_FILE="/etc/sysctl.d/99-hardening.conf"
 case $kernel_choice in
     1)
         echo "[+] Application du Hardening STRICT..."
-        sudo cat <<EOF > $CONF_FILE
+        sudo tee $CONF_FILE > /dev/null <<EOF
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.conf.default.rp_filter = 1
 net.ipv4.conf.all.accept_redirects = 0
@@ -114,7 +114,7 @@ EOF
         ;;
     2)
         echo "[+] Application du Hardening STANDARD..."
-        sudo cat <<EOF > $CONF_FILE
+        sudo tee $CONF_FILE > /dev/null <<EOF
 net.ipv4.conf.default.accept_source_route = 0
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.tcp_syncookies = 1
