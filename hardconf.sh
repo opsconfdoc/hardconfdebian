@@ -144,7 +144,7 @@ sudo aa-status
 echo "la base est créée APRÈS le hardening ! Toute modif ultérieure déclenchera des alertes !"
 
 sudo aideinit
-
+sudo rkhunter --check
 sudo freshclam
 
 sudo apt update
