@@ -1,0 +1,1 @@
+⚠️ ATTENTION : Ce script utilise exclusivement la commande sudo. Pour garantir une exécution correcte, veuillez lancer le script depuis un utilisateur standard (non-root) possédant les privilèges sudo. L'exécution directe en tant que compte root pur n'est pas recommandée.
