@@ -112,6 +112,7 @@ EOF
     2)
         echo "[+] Application du Hardening STANDARD..."
         sudo cat <<EOF > $CONF_FILE
+net.ipv4.conf.default.accept_source_route = 0
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.tcp_syncookies = 1
 net.ipv4.conf.all.accept_redirects = 0
@@ -130,16 +131,22 @@ echo "2) Complain Mode"
 read -p "Choisissez votre mode (1/2) : " aa_choice
 
 case $aa_choice in
-    1) sudo aa-enforce /etc/apparmor.d/* ;;
+    1) sudo aa-enforce /etc/apparmor.d/usr.sbin.* ;;
     2) sudo aa-complain /etc/apparmor.d/* ;;
     *) echo "[X] Ignoré." ;;
 esac
 
 sudo aa-status
 
+echo "la base est créée APRÈS le hardening ! Toute modif ultérieure déclenchera des alertes !"
+
 sudo aideinit
+
 sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+
 sudo freshclam
+
 sudo apt update
 sudo apt upgrade -y
+
 echo "--- Hardening terminé avec succès ---"
