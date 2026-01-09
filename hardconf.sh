@@ -145,8 +145,6 @@ echo "la base est créée APRÈS le hardening ! Toute modif ultérieure déclenc
 
 sudo aideinit
 
-sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
-
 sudo freshclam
 
 sudo apt update
