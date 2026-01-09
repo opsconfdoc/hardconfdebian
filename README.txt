@@ -34,3 +34,7 @@ pour sensibiliser la communauté Debian au hardening.
 ```bash
 chmod +x hardconf.sh
 ./hardconf.sh
+
+![License: CC0](https://img.shields.io/badge/License-CC0-blue.svg)
+![Debian](https://img.shields.io/badge/Debian-11%20%7C%2012-red.svg)
+![ANSSI](https://img.shields.io/badge/ANSSI-BP--028-green.svg)
