@@ -10,7 +10,49 @@ sudo apt install -y rkhunter clamav clamav-daemon aide crowdsec crowdsec-firewal
 sudo systemctl start clamav-daemon
 sudo systemctl enable clamav-daemon
 
-# 2. CONFIGURATION DU PARE-FEU (UFW)
+# 2. Crowdsec
+
+echo "--------------------------------------"
+echo " Configuration CrowdSec - Web Server "
+echo "--------------------------------------"
+echo "1) Apache"
+echo "2) Nginx"
+echo "3) Aucun serveur web"
+echo "--------------------------------------"
+
+read -p "Choisissez votre serveur web (1/2/3) : " web_choice
+
+# Toujours installer les bases
+sudo systemctl enable --now crowdsec
+sudo cscli collections install crowdsecurity/linux
+sudo cscli collections install crowdsecurity/sshd
+
+case $web_choice in
+    1)
+        echo "[+] Configuration CrowdSec pour Apache"
+        sudo cscli collections install crowdsecurity/apache2
+        ;;
+    2)
+        echo "[+] Configuration CrowdSec pour Nginx"
+        sudo cscli collections install crowdsecurity/nginx
+        ;;
+    3)
+        echo "[+] Aucun serveur web sélectionné"
+        ;;
+    *)
+        echo "[X] Choix invalide, aucune collection web installée"
+        ;;
+esac
+
+# Activation du bouncer firewall
+sudo systemctl enable --now crowdsec-firewall-bouncer
+
+# Reload CrowdSec
+sudo systemctl reload crowdsec
+
+echo "[✔] Configuration CrowdSec terminée"
+
+# 3. CONFIGURATION DU PARE-FEU (UFW)
 # Correction des fautes de frappe "defaulft" -> "default"
 sudo ufw --force reset
 sudo ufw default deny incoming
@@ -25,8 +67,9 @@ sudo ufw deny 3389
 sudo ufw deny 20
 sudo ufw deny 137:139/udp
 sudo ufw deny 445
-sudo ufw limit 80/tcp
-sudo ufw limit 443/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 443/udp
 sudo ufw deny 161:162
 sudo ufw deny 631
 
@@ -94,6 +137,9 @@ esac
 
 sudo aa-status
 
+sudo aideinit
+sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+sudo freshclam
 sudo apt update
-sudo apt upgrade
+sudo apt upgrade -y
 echo "--- Hardening terminé avec succès ---"
